@@ -1,0 +1,26 @@
+.photo-card {
+  width: 300px;
+  height: 400px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, .5);
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  &:hover {
+    box-shadow: none;
+  }
+  > div {
+    margin-bottom: 10px;
+  }
+  .photo-card-image {
+    text-align: center;
+    height: 180px;
+    overflow: hidden;
+  }
+  .photo-card-tags {
+    height: 100px;
+    overflow-y: auto;
+  }
+}
