@@ -5,15 +5,17 @@ import $ from 'jquery';
 class Home extends Component {
   state = {
     items: [],
-    page: 1
+    page: 1,
+    tag: ''
   }
 
   componentDidMount() {
-    this.makeFlickrRequest();
+    this.makeFlickrRequest(false, '');
   }
 
-  makeFlickrRequest = (updateItems) => {
-    let flickerAPI = `https://api.flickr.com/services/feeds/photos_public.gne?format=json&safe_search=1&page=${this.state.page}`;
+  makeFlickrRequest = (updateItems, tag) => {
+    let flickerAPI =
+    `https://api.flickr.com/services/feeds/photos_public.gne?format=json&safe_search=1&page=${this.state.page}&tags=${tag}`;
     let self = this;
     $.ajax({
       url: flickerAPI,
@@ -26,11 +28,16 @@ class Home extends Component {
             ...result.items
           ];
           self.setState({
-            items
+            items,
+            tag
           })
         } else {
           self.setState({
-            items: result.items
+            items: []
+          }) // set state twice due to lazy loader bug
+          self.setState({
+            items: result.items,
+            tag
           })
         }
         window.addEventListener('scroll', self.scrollContinueSearch);
@@ -43,7 +50,7 @@ class Home extends Component {
           this.setState({
             page: this.state.page + 1
           })
-          this.makeFlickrRequest(true);
+          this.makeFlickrRequest(true, this.state.tag);
           window.removeEventListener('scroll', this.scrollContinueSearch);
       }
   }
@@ -51,7 +58,7 @@ class Home extends Component {
   renderPhotoCards = (items) => (
       items ?
         items.map((item, i) => (
-            <PhotoCard key={i} card={item} />
+            <PhotoCard key={i} card={item} updateFunc={this.makeFlickrRequest} />
         ))
       : null
   )
@@ -60,7 +67,7 @@ class Home extends Component {
     return (
       <div>
         <h1>Flickr Photo Stream</h1>
-        <div>
+        <div className="photo-cards-container">
           {this.renderPhotoCards(this.state.items)}
         </div>
       </div>

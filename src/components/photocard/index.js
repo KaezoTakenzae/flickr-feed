@@ -1,14 +1,17 @@
 import React from 'react';
 import PhotoCardImage from './PhotoCardImage';
 import PhotoCardAuthorTitle from './PhotoCardAuthorTitle';
+import PhotoCardTags from './PhotoCardTags';
 
-const PhotoCard = ({card}) => {
+const PhotoCard = ({card, updateFunc}) => {
   return (
     <div className="photo-card">
       <PhotoCardImage media={card.media} link={card.link} />
-      <PhotoCardAuthorTitle card={card} />
-      <div className="photo-card-description">{card.title}</div>
-      <div className="photo-card-tags">{card.tags}</div>
+      <div className="card-contents">
+        <PhotoCardAuthorTitle card={card} />
+        <div className="photo-card-description">{card.title}</div>
+        <PhotoCardTags tags={card.tags} updateFunc={updateFunc} />
+      </div>
     </div>
   );
 };

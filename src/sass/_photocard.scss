@@ -1,6 +1,10 @@
+.photo-cards-container {
+  text-align: center;
+}
+
 .photo-card {
-  width: 300px;
-  height: 400px;
+  width: 90%;
+  width: calc(100% - 20px);
   padding: 10px;
   border: 1px solid black;
   border-radius: 8px;
@@ -8,6 +12,14 @@
   overflow: hidden;
   display: inline-block;
   margin: 0 10px 10px 0;
+  @media (min-width: 768px) {
+    width: 200px;
+    height: 300px;
+  }
+  @media (min-width: 1440px) {
+    width: 300px;
+    height: 400px;
+  }
   &:hover {
     box-shadow: none;
   }
@@ -16,11 +28,26 @@
   }
   .photo-card-image {
     text-align: center;
-    height: 180px;
+    max-height: 180px;
     overflow: hidden;
+    @media (min-width: 768px) {
+      height: 180px;
+    }
+  }
+  .card-contents {
+    max-height: 100px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    @media (min-width: 1440px) {
+      max-height: 200px;
+    }
   }
   .photo-card-tags {
-    height: 100px;
-    overflow-y: auto;
+    height: auto;
+    max-height: 100px;
+    span {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
