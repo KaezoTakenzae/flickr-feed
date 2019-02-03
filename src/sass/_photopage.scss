@@ -1,0 +1,16 @@
+.photo-page {
+  > .photo, > .details, {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+  }
+  .photo img {
+    width: 100%;
+  }
+  .details {
+    padding: 15px;
+  }
+  .photo-cards-container {
+    margin-top: 20px;
+  }
+}
