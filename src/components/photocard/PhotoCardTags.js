@@ -12,7 +12,7 @@ const PhotoCardTags = ({tags, updateFunc}) => {
     return (
       tagsArr.length > 0 ?
         tagsArr.map((tag, i) => (
-          <span key={i} data-tag={tag} onClick={(event) => searchByTag(event)}>{tag !== '' ? `${tag}, `: ''}</span>
+          <span key={i} data-tag={tag} onClick={updateFunc ? (event) => searchByTag(event) : null}>{tag !== '' ? `${tag}, `: ''}</span>
         ))
       : null
     )

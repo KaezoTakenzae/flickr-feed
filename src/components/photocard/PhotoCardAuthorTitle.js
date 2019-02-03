@@ -8,12 +8,9 @@ const PhotoCardAuthorTitle = ({card}) => {
       </a> by <a
         rel='noopener noreferrer'
         target='_blank'
-        href={`https://www.flickr.com/photos/${card.author_id}`}
-        title={card.author}>
-          {card.author.substring(
-            card.author.lastIndexOf('("') + 2,
-            card.author.lastIndexOf('")')
-          )}
+        href={`https://www.flickr.com/photos/${card.owner}`}
+        title={card.ownername}>
+          {card.ownername}
       </a>
     </div>
   );
