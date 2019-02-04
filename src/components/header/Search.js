@@ -14,11 +14,19 @@ class Search extends Component {
     searchResults: [],
   }
 
+  componentWillUnmount() {
+    if (this.controller) {
+      this.controller.abort();
+    }
+  }
+
+  controller = null;
+
   displaySearchResults = items => {
     const resultsSubset = items ? [...items].splice(0, 4) : null;
     return resultsSubset ?
       resultsSubset.map((result, i) => (
-        <SearchResult result={result} parent={this} />
+        <SearchResult key={i} result={result} parent={this} />
       ))
     : null
   }
@@ -26,9 +34,20 @@ class Search extends Component {
   makeFlickrRequest = e => {
     const text = e.target.value;
     let flickerAPI = `${flickrUrl}method=${methods.search}&api_key=${apiKey}&text=${text}${extraParams}`;
-    fetch(flickerAPI)
+
+    if (this.controller) {
+      this.controller.abort();
+    }
+
+    this.controller = new AbortController();
+    let signal = this.controller.signal;
+
+    fetch(flickerAPI, { signal })
     .then(resp => {
-      return resp.json();
+      return resp.json().finally(() => {
+        this.controller = null;
+        signal = null;
+      });
     })
     .then(myJson => {
       this.setState({
@@ -37,6 +56,9 @@ class Search extends Component {
       this.setState({
         searchResults: myJson.photos ? myJson.photos.photo : null,
       })
+    })
+    .catch(err => {
+      console.log(`Error: ${err}`);
     });
   }
 
