@@ -1,7 +1,7 @@
 header {
   padding: 10px 20px;
-  background-color: black;
-  color: white;
+  background-color: $color-black;
+  color: $color-white;
   height: 45px;
   position: fixed;
   top: 0;
@@ -9,15 +9,23 @@ header {
   right: 0;
   z-index: 1;
   a {
-    color: white;
+    color: $color-white;
     text-decoration: none;
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   form {
     position: absolute;
     top: 7px;
     right: 20px;
+    width: 200px;
+    transition: all 100ms linear;
+    &:focus-within {
+      width: calc(100% - 40px);
+      @media (min-width: 768px) {
+        width: 400px;
+      }
+    }
     input {
       width: 100%;
     }
@@ -46,8 +54,10 @@ header {
       position: absolute;
       top: 0;
       right: 10px;
+      width: 50px;
       img {
-        width: 50px;
+        max-width: 100%;
+        max-height: 50px;
       }
     }
   }

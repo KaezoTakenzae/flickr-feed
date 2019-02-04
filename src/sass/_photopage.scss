@@ -1,8 +1,12 @@
 .photo-page {
   > .photo, > .details, {
-    display: inline-block;
-    width: 50%;
-    vertical-align: top;
+    display: block;
+    width: 100%;
+    @media (min-width: 768px) {
+      display: inline-block;
+      width: 50%;
+      vertical-align: top;
+    }
   }
   .photo img {
     width: 100%;
