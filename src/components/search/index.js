@@ -45,7 +45,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div>
+      <div className="photo-cards-container">
         {renderPhotoCards(this.state.items, this, 'home')}
       </div>
     );
