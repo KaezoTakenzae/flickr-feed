@@ -14,6 +14,10 @@ class PhotoPage extends Component {
     photo: {},
     items: [],
     photoUrls: [],
+    err: {
+      photo: '',
+      extraPhotos: '',
+    }
   };
 
   componentDidMount() {
@@ -39,13 +43,22 @@ class PhotoPage extends Component {
       return resp.json();
     })
     .then(myJson => {
-      this.setState({
-        photo: {},
-      }) // set state twice due to lazy loader bug
-      this.setState({
-        photo: myJson.photo,
-      })
-      return myJson.photo.owner.nsid;
+      if (myJson.photo) {
+        this.setState({
+          photo: {},
+        }); // set state twice due to lazy loader bug
+        this.setState({
+          photo: myJson.photo,
+        });
+        return myJson.photo.owner.nsid;
+      } else if (myJson.message) {
+        this.setState({
+          err: {
+            ...this.state.err,
+            photo: myJson.message,
+          }
+        });
+      }
     })
     .then(userId => {
       if (loadImages) {
@@ -61,6 +74,14 @@ class PhotoPage extends Component {
           this.setState({
             items: myJson.photos.photo,
           })
+        })
+        .catch(() => {
+          this.setState({
+            err: {
+              ...this.state.err,
+              extraPhotos: 'Unable to load other photos right now'
+            }
+          })
         });
       }
     });
@@ -74,8 +95,8 @@ class PhotoPage extends Component {
     })
     .then(myJson => {
       this.setState({
-        photoUrls: myJson.sizes.size,
-      })
+        photoUrls: myJson.sizes ? myJson.sizes.size : [],
+      });
     });
   }
 
@@ -88,23 +109,27 @@ class PhotoPage extends Component {
             <PhotoImage sizes={this.state.photoUrls} />
           ) : null}
         </div>
-        <div className="details">
-          {photo.owner ? (
-            <Detail name={`Author: ${photo.owner.username}`}
-            link={`https://www.flickr.com/photos/${photo.owner.nsid}/`}
-            blank={true} />
-          ) : null}
-          {photo.title ? (
-            <Detail name={`Title: ${photo.title._content}`}
-              link={`https://www.flickr.com/photos/${photo.owner.nsid}/${photo.id}/`}
+        {this.state.err.photo === '' ? (
+          <div className="details">
+            {photo.owner ? (
+              <Detail name={`Author: ${photo.owner.username}`}
+              link={`https://www.flickr.com/photos/${photo.owner.nsid}/`}
               blank={true} />
-          ) : null}
-          {photo.views ? <Detail name={`Views: ${photo.views}`} /> : null}
-          {photo.description && photo.description._content !== '' ? <Detail name={`Description: ${photo.description._content}`} /> : null}
-        </div>
-        <div className="photo-cards-container">
-          {renderPhotoCards(this.state.items, this)}
-        </div>
+            ) : null}
+            {photo.title ? (
+              <Detail name={`Title: ${photo.title._content}`}
+                link={`https://www.flickr.com/photos/${photo.owner.nsid}/${photo.id}/`}
+                blank={true} />
+            ) : null}
+            {photo.views ? <Detail name={`Views: ${photo.views}`} /> : null}
+            {photo.description && photo.description._content !== '' ? <Detail name={`Description: ${photo.description._content}`} /> : null}
+          </div>
+        ) : <p>{this.state.err.photo}</p> }
+        {
+          <div className="photo-cards-container">
+            {renderPhotoCards(this.state.items, this)}
+          </div>
+        }
       </div>
     );
   }
