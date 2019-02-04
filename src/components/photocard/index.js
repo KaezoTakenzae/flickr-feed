@@ -5,7 +5,8 @@ import PhotoCardTags from './PhotoCardTags';
 
 const PhotoCard = ({card, component, pageType}) => {
   const goToPhoto = e => {
-    if (e.target === e.currentTarget) {
+    const tagName = e.target.tagName;
+    if (tagName !== 'IMG' && tagName !== 'A') {
       component.props.history.push(`/photo/${card.id}`);
       if (pageType !== 'home') {
         component.getImage(card.id);
