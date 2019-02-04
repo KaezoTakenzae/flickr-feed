@@ -26,12 +26,11 @@ header {
     position: relative;
     z-index: 1;
     background-color: #e6e6e0;
-    width: 400px;
     color: black;
     .result {
       position: relative;
       padding: 10px;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid $color-black;
       height: 70px;
       &:last-child {
         border-bottom: 0;
